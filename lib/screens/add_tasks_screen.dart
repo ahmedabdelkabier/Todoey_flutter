@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:todoey_flutter/constants.dart';
 
-class AddTasksScreen extends StatelessWidget {
+class AddTasksScreen extends StatefulWidget {
+  final Function? taskCallback;
+  AddTasksScreen({this.taskCallback});
+  @override
+  State<AddTasksScreen> createState() => _AddTasksScreenState();
+}
+
+class _AddTasksScreenState extends State<AddTasksScreen> {
+  late String taskTitle;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,12 +34,14 @@ class AddTasksScreen extends StatelessWidget {
             TextField(
               autofocus: true,
               textAlign: TextAlign.center,
+              onChanged: (newValue) {
+                taskTitle = newValue;
+              },
             ),
             SizedBox(
               height: 20.0,
             ),
             FlatButton(
-              onPressed: () {},
               child: Text(
                 'Add',
                 style: TextStyle(
@@ -37,6 +49,9 @@ class AddTasksScreen extends StatelessWidget {
                 ),
               ),
               color: Colors.lightBlueAccent,
+              onPressed: () {
+                widget.taskCallback!(taskTitle);
+              },
             ),
           ],
         ),
