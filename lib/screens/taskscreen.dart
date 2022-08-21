@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:todoey_flutter/constants.dart';
 import 'package:todoey_flutter/screens/add_tasks_screen.dart';
 import 'package:todoey_flutter/widgets/tasks_list.dart';
-import 'package:todoey_flutter/models/tasks.dart';
+import 'package:todoey_flutter/models/data.dart';
+import 'package:provider/provider.dart';
 
 class TasksScreen extends StatefulWidget {
   @override
@@ -10,15 +11,9 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
-  List<Tasks> tasks = [
-    Tasks(name: "buy milk"),
-    Tasks(name: "buy eggs"),
-    Tasks(name: "buy bread"),
-    Tasks(name: "paly football"),
-  ];
   @override
   Widget build(BuildContext context) {
-    final int tasksNumber = tasks.length;
+    final int tasksNumber = Provider.of<Data>(context).dataLength;
 
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
@@ -26,14 +21,7 @@ class _TasksScreenState extends State<TasksScreen> {
         onPressed: () {
           showModalBottomSheet(
             context: context,
-            builder: (context) => AddTasksScreen(
-              taskCallback: (newTaskTitle) {
-                setState(() {
-                  tasks.add(Tasks(name: newTaskTitle));
-                });
-                Navigator.pop(context);
-              },
-            ),
+            builder: (context) => AddTasksScreen(),
           );
         },
         child: Icon(Icons.add),
@@ -84,9 +72,7 @@ class _TasksScreenState extends State<TasksScreen> {
           Expanded(
             child: Container(
               decoration: kCardDecoration,
-              child: TasksList(
-                tasks: tasks,
-              ),
+              child: TasksList(),
             ),
           ),
         ],
