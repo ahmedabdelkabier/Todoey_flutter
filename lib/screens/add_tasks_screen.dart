@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:todoey_flutter/constants.dart';
+import 'package:todoey_flutter/models/data.dart';
 
 class AddTasksScreen extends StatefulWidget {
-  final Function? taskCallback;
-  AddTasksScreen({this.taskCallback});
   @override
   State<AddTasksScreen> createState() => _AddTasksScreenState();
 }
@@ -50,7 +48,8 @@ class _AddTasksScreenState extends State<AddTasksScreen> {
               ),
               color: Colors.lightBlueAccent,
               onPressed: () {
-                widget.taskCallback!(taskTitle);
+                Provider.of<Data>(context, listen: false).addTask(taskTitle);
+                Navigator.pop(context);
               },
             ),
           ],
